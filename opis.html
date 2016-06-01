@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <title>eZdravje :: 4. DN :: OIS 2015/2016</title>
   <link href="knjiznice/css/bootstrap.min.css" rel="stylesheet">
+  <link href="knjiznice/css/custom.css" rel="stylesheet">
   <style>
     body {padding-top: 70px;}
   </style>
@@ -22,7 +23,8 @@
           <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
         </button>
         <!-- ZAČETEK: Ime vaše aplikacije -->
-        <a class="navbar-brand" href="index.html">{ime vaše aplikacije}</a>
+        <img id="logo" class="navbar-brand" src="knjiznice/images/logo.png"></img>
+        <a class="navbar-brand" href="index.html">eNurture</a>
         <!-- KONEC: Ime vaše aplikacije -->
       </div>
       <div class="collapse navbar-collapse" id="menujska-vrstica">
@@ -45,7 +47,9 @@
           </div>
           <div class="panel-body">
             <!-- ZAČETEK: Opis ideje, ki jo aplikacija podpira -->
-            <p><strong>TO-DO</strong>: Na tem mestu je potrebno dodati <strong>osnovni opis ideje rešitve</strong> (kakšen je osnovni SCENARIJ UPORABE, KDO je ciljna publika, za kakšen NAMEN se aplikacija uporablja).</p><p class="text-muted">Opis naj ne bo daljši od 200 besed.</p>
+            <p>Spletna aplikacija je namenjena nosečnicam. <br/>
+            S pomočjo nje lahko nadzorujejo potek nosečnosti<i>(pregled nad svojo zdravstveno karkoteko in podatki preteklih pregledov, napotki in opozorila o predpisanih zdravilih)</i> in planirajo preglede in druge dogodke<i>(google koledar sinhroniziran preko več naprav)</i>. <br/>
+            Hkrati ob vnosu meseca nosečnosti vizualno prikaže stadij razvoja otroka.</p>
             <!-- KONEC: Opis ideje, ki jo aplikacija podpira -->
           </div>
         </div>
@@ -55,7 +59,11 @@
           </div>
           <div class="panel-body">
             <!-- ZAČETEK: Uporabljeni zunanji viri podatkov -->
-            <p><strong>TO-DO</strong>: Na tem mestu je navesti zunanji vir podatkov (URL naslov), na kakšen način ste ga uporabili (neposredni API klic, uvožena statična datoteka ipd.) in kaj je bil namen uporabe (kako se vključuje v osnovno idejo aplikacije).</p>
+            <p> <strong>https://apis.google.com/js/platform.js</strong> (neposredni API klic)<br/>
+                Google Calendar. Planiranje dogodkov, pregledov in sinhronizacija z Google Calendar na drugih napravah(smartphone, smartwatch)<br/>
+                <strong>https://rest.ehrscape.com/rest/v1</strong> (neposredni API klic)<br/>
+                Zdravstveni podatki o osebi. Zdravstveno stanje otroka.
+            </p>
             <!-- KONEC: Uporabljeni zunanji viri podatkov -->
           </div>
         </div>
