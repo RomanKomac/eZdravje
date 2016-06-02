@@ -19,7 +19,14 @@
     height: 100%;
     left:0px;
     top:0px;
-    z-index: 100;
+    z-index: 10;
+}
+
+#message{
+    position: fixed;
+    top: 50px;
+    left: 10px;
+    z-index: 11;
 }
 
 #EhrLogin{
@@ -32,8 +39,24 @@
 #EhrInput{
     margin-top: 10px;
     margin-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
     width: 250px;
     height: 40px;
+    box-shadow: 0px 0px 8px #888888;
+}
+
+#logout{
+    border-radius: 5px;
+    background-color: #ff9999;
+    color: black;
+    width: 120px;
+    height: 24px;
+    text-align: center;
+    cursor: pointer;
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
     box-shadow: 0px 0px 8px #888888;
 }
 
@@ -43,4 +66,9 @@
 
 .subscriptText{
     font-size: 0.8em;
+}
+
+.obvestilo{
+    margin-top: 5px;
+    display: block;
 }
