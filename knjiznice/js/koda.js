@@ -59,11 +59,17 @@ function generirajPodatkePacientov(){
 }
 
 $(document).ready(function() {
-
+    if(!Cookies.get('name')){
+        Cookies.set('name', 'value');
+        console.log("Setting cookie");
+    } else {
+        console.log("cookie already set");
+        
+    }
 });
 
 
-
+/*
 function kreirajEHR(stPacienta) {
 	sessionId = getSessionId();
 
@@ -103,4 +109,4 @@ function kreirajEHR(stPacienta) {
 		    }
 		});
 	
-}
+}*/
