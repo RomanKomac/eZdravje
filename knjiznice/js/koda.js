@@ -92,8 +92,14 @@ function generirajPodatkePacientov(){
 
 $(document).ready(function() {
     var sess = Cookies.get('Session');
+    $("#examDate").hide();
     if(sess && sess != "generirano"){
         $("#background").hide();
+        $("#examDate").show();
+        var pat = JSON.parse(Cookies.get("EHR"));
+        pacienti.push(pat);
+        $("#selectorPatient").html($("#selectorPatient")[0].innerHTML + '<option value="'+pat.partyAdditionalInfo[0].value+'">' + pat.firstNames + ' ' + pat.lastNames + '</option>');
+        console.log(pacienti);
     }
     
     $("#EhrInput").keyup(function(event) {
@@ -107,6 +113,15 @@ $(document).ready(function() {
         Cookies.remove("Session");
         location.reload();
     });
+    
+    $("#selectorPatient").change(function () {
+    	if($("#selectorPatient").val() != null){
+	    	$("#examDate").show();
+		    console.log($("#selectorPatient").val());
+		    preberiMeritveVitalnihZnakov($("#selectorPatient").val());
+    	}
+	  })
+	  .change();
     
 });
 
@@ -128,7 +143,10 @@ function preberiEHR(ehrId) {
 	    	    $("#background").hide();
 				var party = data.party;
 				pacienti.push(party);
-				console.log(party);
+				Cookies.set("EHR",party);
+				console.log(Cookies.get("EHR"));
+		        $("#selectorPatient").html($("#selectorPatient")[0].innerHTML + '<option value="'+party.partyAdditionalInfo[0].value+'">' + party.firstNames + ' ' + party.lastNames + '</option>');
+		        $('#selectorPatient').prop('selectedIndex', 0);
 				return party;
 			},
 			error: function(err) {
@@ -141,11 +159,13 @@ function preberiEHR(ehrId) {
 }
 
 
-function kreirajData(stPacienta, ehrId){
+function kreirajData(stPacienta, ehrId, i){
+    if(i >= pacientiExamDate[stPacienta].length)
+    	return;
     var sessionId = getSessionId();
 	
-	
-	for(var i = 0; i < pacientiExamDate[stPacienta].length; i++){
+	//console.log(stPacienta+ " "+ pacientiExamDate[stPacienta].length);
+	//for(var i = 0; i < pacientiExamDate[stPacienta].length; i++){
 		$.ajaxSetup({
 		    headers: {"Ehr-Session": sessionId}
 		});
@@ -173,6 +193,8 @@ function kreirajData(stPacienta, ehrId){
 		    contentType: 'application/json',
 		    data: JSON.stringify(podatki),
 		    success: function (res) {
+		    	i++;
+		    	kreirajData(stPacienta, ehrId, i);
 		    },
 		    error: function(err) {
 		    	console.log(err);
@@ -181,7 +203,7 @@ function kreirajData(stPacienta, ehrId){
             JSON.parse(err.responseText).userMessage + "'!");
 		    }
 		});
-	}
+	//}
 }
 
 function kreirajEHR(stPacienta) {
@@ -207,12 +229,15 @@ function kreirajEHR(stPacienta) {
 		            data: JSON.stringify(partyData),
 		            success: function (party) {
 		                if (party.action == 'CREATE') {
-		                    $("#message").html($("#message")[0].innerHTML+"<span class='obvestilo " +
+		                    $("#message").html($("#message")[0].innerHTML + "<span class='obvestilo " +
                           "label label-success fade-in'>Uspešno kreiran EHR '" +
                           ehrId + "'.</span>");
-
+							
 		                    pacienti.push(partyData);
-		                    kreirajData(stPacienta, ehrId);
+		                    console.log(partyData);
+		                    $("#selectorPatient").html($("#selectorPatient")[0].innerHTML + '<option value="'+partyData.partyAdditionalInfo[0].value+'">' + partyData.firstNames + ' ' + partyData.lastNames + '</option>');
+		                    $('#selectorPatient').prop('selectedIndex', -1);
+		                    kreirajData(stPacienta, ehrId, 0);
 		                    return ehrId;
 		                }
 		            },
@@ -226,4 +251,29 @@ function kreirajEHR(stPacienta) {
 		    }
 		});
 	
+}
+
+function preberiMeritveVitalnihZnakov(ehrId) {
+	var sessionId = getSessionId();
+
+	$.ajax({
+    url: baseUrl + "/view/" + ehrId + "/blood_pressure",
+    type: 'GET',
+    headers: {
+        "Ehr-Session": sessionId
+    },
+    success: function (res) {
+    	console.log(res);
+        res.forEach(function (el, i, arr) {
+            var date = new Date(el.time);
+            el.date = date.getTime();
+        });
+
+    }
+});
+
+
+	
+	
+
 }

@@ -72,3 +72,47 @@
     margin-top: 5px;
     display: block;
 }
+
+
+#selectBar {
+    background-color: #222;
+    height: 50px;
+    width: 100%;
+    color: white;
+}
+
+#selectUser {
+    margin-left: 10px;
+    margin-top: 14px;
+    float: left;
+}
+
+.selector {
+    color: black;
+    max-width: 200px;
+    float: left;
+    margin-left: 15px;
+    margin-top: 14px;
+    height: 20px;
+}
+
+th {
+    background-color: #222;
+    color: white;
+}
+table {
+    border-collapse: collapse;
+    width: 30%;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+td {
+    padding-left: 15px;
+    cursor: pointer;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
