@@ -103,6 +103,8 @@ th {
 table {
     border-collapse: collapse;
     width: 30%;
+    border-color: #222;
+    border-width: 2px;
 }
 
 th, td {
@@ -113,6 +115,10 @@ th, td {
 td {
     padding-left: 15px;
     cursor: pointer;
+}
+
+td:hover {
+    background-color: #999;
 }
 
 tr:nth-child(even){background-color: #f2f2f2}

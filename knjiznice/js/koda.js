@@ -7,10 +7,17 @@ var password = "ois4fri";
 
 var pacienti = [];
 
+var gotInfo = 0;
+
+var currentPatientBP = [];
+var currentPatientW = [];
+var currentPatientH = [];
+var currentPatientExamDate = [];
+
 var pacientiName      = ["Zdravka", "Marija", "Tija"];
 var pacientiSurname   = ["Dren", "Novak", "Suhe"];
 var pacientiBirthDate = ["1988-12-09T00:00:00.000Z", "1978-02-12T00:00:00.000Z", "1990-04-02T00:00:00.000Z"];
-var pacientiGender    = ["Female", "Female", "Female"];
+var pacientiGender    = ["FEMALE", "FEMALE", "FEMALE"];
 
 var pacientiHeight    = ["169", "165", "174"];
 
@@ -117,8 +124,17 @@ $(document).ready(function() {
     $("#selectorPatient").change(function () {
     	if($("#selectorPatient").val() != null){
 	    	$("#examDate").show();
-		    console.log($("#selectorPatient").val());
-		    preberiMeritveVitalnihZnakov($("#selectorPatient").val());
+	    	var ehrId = $("#selectorPatient").val();
+		    //console.log(ehrId);
+		    currentPatientBP = [];
+		    currentPatientH = [];
+		    currentPatientW = [];
+		    currentPatientExamDate = [];
+		    gotInfo = 0;
+		    $("#examDate").html("<tr><th>Examination Date</th></tr>");
+		    preberiKrvniTlak(ehrId);
+		    preberiTezo(ehrId);
+		    preberiVisino(ehrId);
     	}
 	  })
 	  .change();
@@ -139,15 +155,23 @@ function preberiEHR(ehrId) {
 			headers: {"Ehr-Session": sessionId},
 	    	success: function (data) {
 	    	    $("#message").html("");
-	    	    Cookies.set("Session", "vneseno");
-	    	    $("#background").hide();
-				var party = data.party;
-				pacienti.push(party);
-				Cookies.set("EHR",party);
-				console.log(Cookies.get("EHR"));
-		        $("#selectorPatient").html($("#selectorPatient")[0].innerHTML + '<option value="'+party.partyAdditionalInfo[0].value+'">' + party.firstNames + ' ' + party.lastNames + '</option>');
-		        $('#selectorPatient').prop('selectedIndex', 0);
-				return party;
+	    	    var party = data.party;
+	    	    if(party.gender && party.gender == "FEMALE"){
+		    	    Cookies.set("Session", "vneseno");
+		    	    $("#background").hide();
+					$("#examDate").show();
+					pacienti.push(party);
+					Cookies.set("EHR",party);
+					console.log(Cookies.get("EHR"));
+			        $("#selectorPatient").html($("#selectorPatient")[0].innerHTML + '<option value="'+party.partyAdditionalInfo[0].value+'">' + party.firstNames + ' ' + party.lastNames + '</option>');
+			        $('#selectorPatient').prop('selectedIndex', 0);
+					return party;
+	    	    } else {
+	    	    	$("#message").html("<span class='obvestilo label " +
+		          "label-danger fade-in'>Napaka '" +
+		          "Vnešena oseba ni ženskega spola" + "'!");
+		          return party;
+	    	    }
 			},
 			error: function(err) {
 				$("#message").html("<span class='obvestilo label " +
@@ -219,6 +243,7 @@ function kreirajEHR(stPacienta) {
 		        var partyData = {
 		            firstNames: pacientiName[stPacienta],
 		            lastNames: pacientiSurname[stPacienta],
+		            gender: pacientiGender[stPacienta],
 		            dateOfBirth: pacientiBirthDate[stPacienta],
 		            partyAdditionalInfo: [{key: "ehrId", value: ehrId}]
 		        };
@@ -234,7 +259,7 @@ function kreirajEHR(stPacienta) {
                           ehrId + "'.</span>");
 							
 		                    pacienti.push(partyData);
-		                    console.log(partyData);
+		                    //console.log(partyData);
 		                    $("#selectorPatient").html($("#selectorPatient")[0].innerHTML + '<option value="'+partyData.partyAdditionalInfo[0].value+'">' + partyData.firstNames + ' ' + partyData.lastNames + '</option>');
 		                    $('#selectorPatient').prop('selectedIndex', -1);
 		                    kreirajData(stPacienta, ehrId, 0);
@@ -253,27 +278,95 @@ function kreirajEHR(stPacienta) {
 	
 }
 
-function preberiMeritveVitalnihZnakov(ehrId) {
+function preberiKrvniTlak(ehrId) {
 	var sessionId = getSessionId();
 
 	$.ajax({
-    url: baseUrl + "/view/" + ehrId + "/blood_pressure",
-    type: 'GET',
-    headers: {
-        "Ehr-Session": sessionId
-    },
-    success: function (res) {
-    	console.log(res);
-        res.forEach(function (el, i, arr) {
-            var date = new Date(el.time);
-            el.date = date.getTime();
-        });
+	    url: baseUrl + "/view/" + ehrId + "/blood_pressure",
+	    type: 'GET',
+	    headers: {
+	        "Ehr-Session": sessionId
+	    },
+	    success: function (res) {
+	    	//console.log(res);
+	        res.forEach(function (el, i, arr) {
+	            var date = new Date(el.time);
+	            el.date = date;
+	            //ce slucajno niso vse meritve prisotne na vsakem examu
+	            if($.inArray( el.time, currentPatientExamDate) == -1){
+	            	currentPatientExamDate.push(el.time);
+	            }
+	        });
+			currentPatientBP = res;
+			gotInfo++;
+			fillTable();
+	    }
+	});
+}
 
-    }
-});
+function preberiTezo(ehrId) {
+	var sessionId = getSessionId();
 
+	$.ajax({
+	    url: baseUrl + "/view/" + ehrId + "/weight",
+	    type: 'GET',
+	    headers: {
+	        "Ehr-Session": sessionId
+	    },
+	    success: function (res) {
+	    	//console.log(res);
+	        res.forEach(function (el, i, arr) {
+	            var date = new Date(el.time);
+	            el.date = date;
+	            if($.inArray( el.time, currentPatientExamDate ) == -1){
+	            	currentPatientExamDate.push(el.time);
+	            }
+	        });
+			currentPatientW = res;
+			gotInfo++;
+			fillTable();
+	    }
+	});
+}
 
-	
-	
+function preberiVisino(ehrId) {
+	var sessionId = getSessionId();
 
+	$.ajax({
+	    url: baseUrl + "/view/" + ehrId + "/height",
+	    type: 'GET',
+	    headers: {
+	        "Ehr-Session": sessionId
+	    },
+	    success: function (res) {
+	    	//console.log(res);
+	        res.forEach(function (el, i, arr) {
+	            var date = new Date(el.time);
+	            el.date = date;
+	            if($.inArray( el.time, currentPatientExamDate ) == -1){
+	            	currentPatientExamDate.push(el.time);
+	            }
+	        });
+			currentPatientH = res;
+			gotInfo++;
+			fillTable();
+	    }
+	});
+}
+
+function fillTable(){
+	if(gotInfo != 3)
+		return;
+	else {
+	//sortiranje datumov
+	currentPatientExamDate.sort(SortDates);
+	currentPatientExamDate.forEach(function (el, i, arr) {
+        var date = new Date(el);
+        $("#examDate").append('<tr><td>'+date.toLocaleDateString()+'</td></tr>');
+    });
+	}
+}
+
+function SortDates(a, b){
+  return ((a < b) ? -1 : ((a > b) ? 1 : 0));
 }
