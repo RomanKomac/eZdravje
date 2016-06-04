@@ -10,17 +10,41 @@ var pacienti = [];
 var pacientiName      = ["Zdravka", "Marija", "Tija"];
 var pacientiSurname   = ["Dren", "Novak", "Suhe"];
 var pacientiBirthDate = ["1988-12-09T00:00:00.000Z", "1978-02-12T00:00:00.000Z", "1990-04-02T00:00:00.000Z"];
-var pacientiWeight    = ["67", "72", "50"];
+var pacientiGender    = ["Female", "Female", "Female"];
+
 var pacientiHeight    = ["169", "165", "174"];
-var pacientiSistolycPressure = [
-        
-        
+
+var pacientiWeights    = [
+	["67", "67", "68", "66", "67", "68", "67", "66"], 
+	["72", "70", "71", "71", "71", "72"], 
+	["50", "49", "50", "50", "49", "48", "48", "48", "47", "46"]
+	];
+
+var pacientiSystolicPressure = [
+        ["110", "118", "109", "111", "110", "114", "113", "112"],
+        ["112", "116", "126", "110", "114", "130"],
+        ["101", "99", "103", "96", "112", "102", "93", "100", "111", "104"]
     ];
 
-var pacientiDiastolycPressure = [
-        
-        
+var pacientiDiastolicPressure = [
+        ["60", "72", "59", "60", "73", "73", "79", "73"],
+        ["62", "68", "84", "70", "64", "70"],
+        ["51", "59", "57", "66", "62", "62", "73", "71", "81", "64"]
     ];
+    
+var pacientiExamDate = [
+		["2016-01-04T12:47:00.000Z", "2016-01-19T15:05:00.000Z", "2016-01-17T10:52:00.000Z", "2016-02-02T12:21:00.000Z", "2016-02-04T16:00:00.000Z", "2016-02-19T11:12:00.000Z", "2016-03-01T11:47:00.000Z", "2016-03-04T14:00:00.000Z"],
+		["2015-06-04T12:47:00.000Z", "2015-08-19T13:05:00.000Z", "2016-01-14T10:12:00.000Z", "2016-04-02T14:42:00.000Z", "2016-05-12T12:00:00.000Z", "2016-06-04T11:12:00.000Z"],
+		["2015-10-04T12:00:00.000Z", "2015-10-12T11:17:00.000Z", "2015-12-07T10:00:00.000Z", "2015-12-22T9:39:00.000Z", "2016-01-29T14:12:00.000Z", "2016-02-02T11:13:00.000Z", "2016-03-11T11:59:00.000Z", "2016-03-25T17:15:00.000Z", "2016-04-04T12:00:00.000Z", "2016-05-07T11:28:00.000Z"]
+	];
+	
+var pacientiOximetry = [
+		[97, 100, 100, 96, 97, 96, 100, 99],
+		[97, 92, 97, 100, 97, 100],
+		[87, 92, 97, 96, 97, 96, 98, 99, 98, 99]
+	];
+	
+var pacientiCommitter = ["Tina Maze", "Damjan Murko", "Rok Kosmac"];
 
 
 /**
@@ -51,8 +75,6 @@ function generirajPodatke(stPacienta) {
   var ehrId = "";
 
     ehrId = kreirajEHR(stPacienta);
-            //kreirajData(stPacienta);
-
 
   return ehrId;
 }
@@ -119,6 +141,49 @@ function preberiEHR(ehrId) {
 }
 
 
+function kreirajData(stPacienta, ehrId){
+    var sessionId = getSessionId();
+	
+	
+	for(var i = 0; i < pacientiExamDate[stPacienta].length; i++){
+		$.ajaxSetup({
+		    headers: {"Ehr-Session": sessionId}
+		});
+		var podatki = {
+		    "ctx/language": "en",
+		    "ctx/territory": "SI",
+		    "ctx/time": pacientiExamDate[stPacienta][i],
+		    "vital_signs/height_length/any_event/body_height_length": pacientiHeight[stPacienta],
+		    "vital_signs/body_weight/any_event/body_weight": pacientiWeights[stPacienta][i],
+		    "vital_signs/blood_pressure/any_event/systolic": pacientiSystolicPressure[stPacienta][i],
+		    "vital_signs/blood_pressure/any_event/diastolic": pacientiDiastolicPressure[stPacienta][i],
+		    "vital_signs/indirect_oximetry:0/spo2|numerator": pacientiOximetry[stPacienta][i]
+		};
+	
+		var parametriZahteve = {
+		    ehrId: ehrId,
+		    templateId: 'Vital Signs',
+		    format: 'FLAT',
+		    committer: pacientiCommitter[stPacienta]
+		};
+	
+		$.ajax({
+		    url: baseUrl + "/composition?" + $.param(parametriZahteve),
+		    type: 'POST',
+		    contentType: 'application/json',
+		    data: JSON.stringify(podatki),
+		    success: function (res) {
+		    },
+		    error: function(err) {
+		    	console.log(err);
+		    	$("#message").html(
+            "<span class='obvestilo label label-danger fade-in'>Napaka '" +
+            JSON.parse(err.responseText).userMessage + "'!");
+		    }
+		});
+	}
+}
+
 function kreirajEHR(stPacienta) {
 	var sessionId = getSessionId();
 		$.ajaxSetup({
@@ -145,9 +210,9 @@ function kreirajEHR(stPacienta) {
 		                    $("#message").html($("#message")[0].innerHTML+"<span class='obvestilo " +
                           "label label-success fade-in'>Uspešno kreiran EHR '" +
                           ehrId + "'.</span>");
-		                    //$("#preberiEHRid").val(ehrId);
+
 		                    pacienti.push(partyData);
-		                    console.log(partyData)
+		                    kreirajData(stPacienta, ehrId);
 		                    return ehrId;
 		                }
 		            },
