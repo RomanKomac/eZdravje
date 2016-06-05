@@ -50,7 +50,7 @@
             <!-- ZAČETEK: Opis ideje, ki jo aplikacija podpira -->
             <p>Spletna aplikacija je namenjena nosečnicam. <br/>
             S pomočjo nje lahko nadzorujejo potek nosečnosti<i>(pregled nad svojo zdravstveno karkoteko in podatki preteklih pregledov, napotki itd.)</i> in planirajo preglede in druge dogodke<i>(google koledar sinhroniziran preko več naprav)</i>. <br/>
-            Hkrati ob vnosu meseca nosečnosti vizualno prikaže stadij razvoja otroka.</p>
+            Aplikacija tudi posreduje najbližjo pot od trenutne lokacije do porodnišnice.</p>
             <!-- KONEC: Opis ideje, ki jo aplikacija podpira -->
           </div>
         </div>
@@ -61,10 +61,7 @@
           <div class="panel-body">
             <!-- ZAČETEK: Uporabljeni zunanji viri podatkov -->
             <p> <strong>https://apis.google.com/js/platform.js</strong> (neposredni API klic)<br/>
-                Google Calendar. Planiranje dogodkov, pregledov in sinhronizacija z Google Calendar na drugih napravah(smartphone, smartwatch)<br/>
-                Preko Google Maps izračunana in prikazana najhitrejša pot do porodnišnice(upoštevani zastoji, zaprte ceste)<br/>
-                <strong>https://rest.ehrscape.com/rest/v1</strong> (neposredni API klic)<br/>
-                Zdravstveni podatki o osebi.
+                Preko Google Maps izračunana in prikazana najhitrejša pot do porodnišnice.<br/>
             </p>
             <!-- KONEC: Uporabljeni zunanji viri podatkov -->
           </div>
@@ -75,7 +72,10 @@
           </div>
           <div class="panel-body">
             <!-- ZAČETEK: Master/detail načrtovalski vzorec -->
-            <p><strong>TO-DO</strong>: Na tem mestu morate navesti uporabljen master/detail načrtovalski vzorec in na kakšen način ga nameravate uporabiti.</p>
+            <p>Spletna aplikacija uporablja Master/detail vzorec za prikaz vseh dosedanjih pregledov. <br/>
+            Če uporabnik z miško vstopi v eno od polj v tabeli pregledov se mu na desni strani tabele prikažejo rezultati.<br/>
+            Pod vsakim grafom se uporabniku prikaže tudi obvestilo, če odmerjena vrednost specifičnega pregleda prekomerno odstopa od pričakovane.<br/>
+            Tehnika Master/detail je bila uporabljena na tem mestu zaradi večje nazornosti. Uporabnik ima tako večji pregled nad posameznimi meritvami.</p>
             <!-- KONEC: Master/detail načrtovalski vzorec -->
           </div>
         </div>
@@ -85,7 +85,9 @@
           </div>
           <div class="panel-body">
             <!-- ZAČETEK: Uporabljeni zunanji viri podatkov -->
-            <p><strong>TO-DO</strong>: Na tem mestu je potrebno navesti uporabljeno tehniko vizualizacije podatkov (za pomoč lahko uporabite primer iz <a href="https://github.com/mbostock/d3/wiki/Gallery" target="_blank">D3.js galerije</a>) in zakaj je bila ta tehnika izbrana.</p>
+            <p>Za vizualizacijo indeksa telesne mase je uporabljen krofni diagram. Z njim se da ekspresivno in enostavno prikazati razmerje med težo ter višino. <br/> 
+            Temno modri del diagrama označuje težo, svetlo modri pa označuje višino, 
+            zračunani indeks telesne mase pa je prikazan na sredini diagrama.</p>
             <!-- KONEC: Uporabljeni zunanji viri podatkov -->
           </div>
         </div>

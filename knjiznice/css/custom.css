@@ -104,16 +104,20 @@ table {
     display: inline-block;
     float: left;
     border-collapse: collapse;
-    width: 200px;
+    width: 140px;
     border-color: #222;
     border-width: 2px;
+    overflow: auto;
+    max-height: 390px;
 }
 
 th, td {
     text-align: left;
     padding: 8px;
+    width: 10%;
     border-bottom: 1px solid #ddd;
 }
+
 td {
     padding-left: 15px;
     cursor: pointer;
@@ -123,11 +127,16 @@ td:hover {
     background-color: #999;
 }
 
+tr{
+    width: 100%;
+}
+
 tr:nth-child(even){background-color: #f2f2f2}
 
 donut, areamap{
     display: inline-block;
     float: left;
+    margin-left: 30px;
 }
 
 .axis path,
@@ -150,7 +159,8 @@ donut, areamap{
     width: 350px;
     height: 250px;
     background-color: #CCC;
-    display: block;
+    float: left;
+    display: inline-block;
 }
 
 #mainContent{
@@ -162,4 +172,41 @@ donut, areamap{
     min-height: 450px;
     height: auto;
     padding-bottom: 10px;
+    background-color: #FFFDFD;
+}
+
+#instructions{
+    padding: 10px;
+    margin-top: 20px;
+    margin-left: 10px;
+    border-style: solid;
+    border-radius: 10px;
+    border-color: #222;
+    border-width: 3px;
+    display: inline-block;
+    float: left;
+    width: 200px;
+    height: 70px;
+    text-align: left;
+}
+
+#devTable, #info{
+    float: right;
+    display: inline-block;
+}
+
+#devTable tr{
+      float:right;
+}
+
+#info {
+    width: 200px;
+    padding: 5px;
+    height: auto;
+    margin-top: 20px;
+    margin-right: 10px;
+    border-style: solid;
+    border-radius: 10px;
+    border-color: #EEF;
+    border-width: 3px;
 }

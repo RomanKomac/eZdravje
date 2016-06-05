@@ -75,10 +75,28 @@
             <script src="knjiznice/js/doughchart.js"></script>
             <div id="bmiOpozorilo"></div>
           </donut>
+          <div>
+            <table id="devTable">
+              <tr>
+                <th>Razvoj</th>
+              </tr>
+              <tr onmouseenter="razvoj(this)" stadij="1"><td>1. mesec</td></tr>
+              <tr onmouseenter="razvoj(this)" stadij="2"><td>2. mesec</td></tr>
+              <tr onmouseenter="razvoj(this)" stadij="3"><td>3. mesec</td></tr>
+              <tr onmouseenter="razvoj(this)" stadij="4"><td>4. mesec</td></tr>
+              <tr onmouseenter="razvoj(this)" stadij="5"><td>5. mesec</td></tr>
+              <tr onmouseenter="razvoj(this)" stadij="6"><td>6. mesec</td></tr>
+              <tr onmouseenter="razvoj(this)" stadij="7"><td>7. mesec</td></tr>
+              <tr onmouseenter="razvoj(this)" stadij="8"><td>8. mesec</td></tr>
+              <tr onmouseenter="razvoj(this)" stadij="9"><td>9. mesec</td></tr>
+            </table>
+            <div id="info"></div>
+          </div>
           <div style="clear:both"></div>
         </div>
-        <div id="map"></div>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTn-LKJhz5CqTr9aCGC7PpVmG9lPkwa64&callback=initMap" async defer></script>
+          <div id="map"></div>
+          <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTn-LKJhz5CqTr9aCGC7PpVmG9lPkwa64&callback=initMap" async defer></script>
+          <div id="instructions"></div>
       </div>
     </div>
   </div>

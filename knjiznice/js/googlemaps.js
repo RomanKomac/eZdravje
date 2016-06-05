@@ -44,7 +44,11 @@ function initMap() {
             }, function(response, status) {
               if (status === google.maps.DirectionsStatus.OK) {
                 directionsDisplay.setDirections(response);
+                var el = document.getElementById("instructions");
                 console.log(response);
+                var responseData = response.routes[0].legs[0];
+                console.log(responseData);
+                el.innerHTML = "<strong>Oddaljenost: "+responseData.distance.text +"<br/> Čas vožnje: "+ responseData.duration.text+"</strong>";
               } else {
                   console.log(response);
               }

@@ -7,6 +7,31 @@ var password = "ois4fri";
 
 var pacienti = [];
 
+var developmentPagePictures = [
+	"http://www.babycenter.com.my/i/fetal/4.jpg",
+	"http://www.babycenter.com.my/i/fetal/8.jpg",
+	"http://www.babycenter.com.my/i/fetal/13.jpg",
+	"http://www.babycenter.com.my/i/fetal/17.jpg",
+	"http://www.babycenter.com.my/i/fetal/21.jpg",
+	"http://www.babycenter.com.my/i/fetal/25.jpg",
+	"http://www.babycenter.com.my/i/fetal/30.jpg",
+	"http://www.babycenter.com.my/i/fetal/34.jpg",
+	"http://www.babycenter.com.my/i/fetal/38.jpg"
+	];
+	
+var developmentPageDescriptions = [
+	"Your baby is an <strong>embryo</strong> consisting of two layers of cells from which all his organs and body parts will develop.",
+	"Your baby is now about <strong>the size of a kidney bean</strong> and is constantly moving. He has distinct, <strong>slightly webbed fingers</strong>.",
+	"By now your baby is around <strong>7cm to 8cm</strong> long and weighs about the same as a pea pod. His tiny, unique <strong>fingerprints</strong> are now in place.",
+	"Your baby is now about <strong>13cm</strong> long and weighs 140g. His skeleton is starting to harden from rubbery cartilage to bone",
+	"<strong>Eyebrows and eyelids</strong> are now in place. Your baby would now be more than <strong>27cm</strong> long if he stretched out his legs.",
+	"Your baby weighs about a <strong>660g</strong>. His wrinkled skin is starting to <strong>smooth out</strong> as he puts on underskin layers of fat.",
+	"By now, your baby is more than <strong>40cm</strong> long. He can open and close her eyes and probably see what's around him.",
+	"Your baby now weighs about <strong>2.2kg</strong>. His layers of fat are filling him out, making him rounder, and his <strong>lungs</strong> are well developed.",
+	"Your baby is <strong>almost due</strong>. At birth, the average baby boy is <strong>52cm</strong> long from head to toe and weighs approximately <strong>3.4kg</strong>. <br/>The average baby girl is <strong>50cm</strong> and weighs <strong>3.2kg</strong>"
+	];
+	
+
 var gotInfo = 0;
 
 var currentPatientBP = [];
@@ -102,6 +127,15 @@ function generirajPodatkePacientov(){
 }
 
 
+function razvojpreload(stadij){
+	$("#info").html('<img src="'+developmentPagePictures[stadij-1]+'"></img><div>'+developmentPageDescriptions[stadij-1]+'</div>');
+}
+
+function razvoj(content){
+	var stadij = content.getAttribute("stadij");
+	$("#info").html('<img src="'+developmentPagePictures[stadij-1]+'"></img><div>'+developmentPageDescriptions[stadij-1]+'</div>');
+}
+
 function tab(content){
     var date = content.getAttribute("date");
     var pW, pBP, pH;
@@ -182,6 +216,8 @@ function changedBox(){
 }
 
 $(document).ready(function() {
+	//default picture
+	razvojpreload(1);
     var sess = Cookies.get('Session');
     $("#examDate").hide();
     if(sess && sess != "generirano"){
@@ -222,7 +258,6 @@ $(document).ready(function() {
     	}
 	  })
 	  .change();
-    
 });
 
 
