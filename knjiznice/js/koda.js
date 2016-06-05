@@ -22,7 +22,7 @@ var pacientiGender    = ["FEMALE", "FEMALE", "FEMALE"];
 var pacientiHeight    = ["169", "165", "174"];
 
 var pacientiWeights    = [
-	["67", "67", "68", "66", "67", "68", "67", "66"], 
+	["65", "66", "66", "65", "67", "66", "64", "62"], 
 	["72", "70", "71", "71", "71", "72"], 
 	["50", "49", "50", "50", "49", "48", "48", "48", "47", "46"]
 	];
@@ -124,6 +124,18 @@ function tab(content){
     if(pW && pH){
     	render(pW.weight/(pH.height*pH.height/10000));
     }
+    
+    if(pBP){
+    	var array2 = [];
+		array2[0] = {};
+		array2[0].frequency = pBP.diastolic;
+		array2[0].name = 'Diastolični';
+		array2[1] = {};
+		array2[1].frequency = pBP.systolic;
+		array2[1].name = 'Sistolični';
+		renderArea(array2);
+    }
+    
 }
 
 function changedBox(){
@@ -136,7 +148,7 @@ function changedBox(){
 		    currentPatientW = [];
 		    currentPatientExamDate = [];
 		    gotInfo = 0;
-		    $("#examDate").html("<tr><th>Examination Date</th></tr>");
+		    $("#examDate").html("<tr><th>Datum pregleda</th></tr>");
 		    preberiKrvniTlak(ehrId);
 		    preberiTezo(ehrId);
 		    preberiVisino(ehrId);
@@ -177,7 +189,7 @@ $(document).ready(function() {
 		    currentPatientW = [];
 		    currentPatientExamDate = [];
 		    gotInfo = 0;
-		    $("#examDate").html("<tr><th>Examination Date</th></tr>");
+		    $("#examDate").html("<tr><th>Datum pregleda</th></tr>");
 		    preberiKrvniTlak(ehrId);
 		    preberiTezo(ehrId);
 		    preberiVisino(ehrId);
@@ -211,6 +223,8 @@ function preberiEHR(ehrId) {
 					console.log(Cookies.get("EHR"));
 			        $("#selectorPatient").html($("#selectorPatient")[0].innerHTML + '<option value="'+party.partyAdditionalInfo[0].value+'">' + party.firstNames + ' ' + party.lastNames + '</option>');
 			        $('#selectorPatient').prop('selectedIndex', 0);
+			        changedBox();
+			        
 					return party;
 	    	    } else {
 	    	    	$("#message").html("<span class='obvestilo label " +
@@ -406,10 +420,12 @@ function fillTable(){
 	else {
 	//sortiranje datumov
 	currentPatientExamDate.sort(SortDates);
+	console.log("Dates sorted");
 	currentPatientExamDate.forEach(function (el, i, arr) {
         var date = new Date(el);
         $("#examDate").append('<tr onmouseenter="tab(this)" date="' + el + '"><td>'+date.toLocaleDateString()+'</td></tr>');
     });
+    console.log("Defaults added");
     //defaultanje chartov na prvo meritev
     var dat = currentPatientExamDate[0];
     var pW, pBP, pH;
@@ -429,11 +445,20 @@ function fillTable(){
         }
     });
     
+    
     if(pW && pH){
     	render(pW.weight/(pH.height*pH.height/10000));
     }
-    
-    
+    if(pBP){
+    	array = [];
+		array[0] = {};
+		array[0].frequency = pBP.diastolic;
+		array[0].name = 'Diastolični';
+		array[1] = {};
+		array[1].frequency = pBP.systolic;
+		array[1].name = 'Sistolični';
+		renderArea(array);
+    }
 	}
 }
 

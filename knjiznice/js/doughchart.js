@@ -45,7 +45,7 @@ function render(BMI){
 // generate new random data
 data = [BMI, 40-BMI];
 // add transition to new path
-g.datum(data).selectAll("path").data(pie).transition().duration(1000).attrTween("d", arcTween)
+g.datum(data).selectAll("path").data(pie).transition().duration(1000).attrTween("d", arcTween);
 
 // add any new paths
 g.datum(data).selectAll("path")
