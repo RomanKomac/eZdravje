@@ -136,3 +136,30 @@ donut, areamap{
   stroke: #000;
   shape-rendering: crispEdges;
 }
+
+#bmiOpozorilo, #tlakOpozorilo {
+    width: 200px;
+}
+
+#map {
+    margin-top: 20px;
+    border-style: solid;
+    border-radius: 10px;
+    border-color: #222;
+    border-width: 3px;
+    width: 350px;
+    height: 250px;
+    background-color: #CCC;
+    display: block;
+}
+
+#mainContent{
+    border-style: solid;
+    border-radius: 10px;
+    border-color: #222;
+    border-width: 3px;
+    width: 100%;
+    min-height: 450px;
+    height: auto;
+    padding-bottom: 10px;
+}

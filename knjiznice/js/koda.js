@@ -122,7 +122,15 @@ function tab(content){
     });
     
     if(pW && pH){
-    	render(pW.weight/(pH.height*pH.height/10000));
+    	var BMI = pW.weight/(pH.height*pH.height/10000);
+    	render(BMI);
+    	if(BMI > 25){
+    		$("#bmiOpozorilo").html('Povišan indeks telesne mase. BMI nad 25 lahko vodi do <strong>težav pri porodu</strong>. Previsok pritisk v kombinaciji s povišanim BMI indeksom pa lahko povzroči dolgotrajne posledice na ledvicah in drugih notranjih organih. <a href="http://www.mayoclinic.org/healthy-lifestyle/pregnancy-week-by-week/in-depth/pregnancy-and-obesity/art-20044409">[link]</a>');
+    	} else if(BMI < 18.5) {
+    		$("#bmiOpozorilo").html('Znižan indeks telesne mase. BMI pod 18.5 lahko vodi do <strong>težav pri porodu</strong> ali <strong>spontanega splava.</strong>');
+    	} else {
+    		$("#bmiOpozorilo").html("");
+    	}
     }
     
     if(pBP){
@@ -134,6 +142,24 @@ function tab(content){
 		array2[1].frequency = pBP.systolic;
 		array2[1].name = 'Sistolični';
 		renderArea(array2);
+		
+		var tlakStr = "";
+		
+		if(pBP.diastolic > 90){
+			tlakStr += "Močno povišan spodnji tlak <br/>";
+		}
+		else if(pBP.diastolic > 80){
+			tlakStr += "Rahlo povišan spodnji tlak <br/>";
+		}
+		
+		if(pBP.systolic > 130){
+			tlakStr += "Močno povišan zgornji tlak <br/>";
+		}
+		else if(pBP.systolic > 120){
+			tlakStr += "Rahlo povišan zgornji tlak <br/>";
+		}
+		$("#tlakOpozorilo").html(tlakStr);
+		
     }
     
 }
@@ -447,7 +473,15 @@ function fillTable(){
     
     
     if(pW && pH){
-    	render(pW.weight/(pH.height*pH.height/10000));
+    	var BMI = pW.weight/(pH.height*pH.height/10000);
+    	render(BMI);
+    	if(BMI > 25){
+    		$("#bmiOpozorilo").html('Povišan indeks telesne mase. BMI nad 25 lahko vodi do <strong>težav pri porodu</strong>. Previsok pritisk v kombinaciji s povišanim BMI indeksom pa lahko povzroči dolgotrajne posledice na ledvicah in drugih notranjih organih. <a href="http://www.mayoclinic.org/healthy-lifestyle/pregnancy-week-by-week/in-depth/pregnancy-and-obesity/art-20044409">[link]</a>');
+    	} else if(BMI < 18.5) {
+    		$("#bmiOpozorilo").html('Znižan indeks telesne mase. BMI pod 18.5 lahko vodi do <strong>težav pri porodu</strong> ali <strong>spontanega splava.</strong>');
+    	} else {
+    		$("#bmiOpozorilo").html("");
+    	}
     }
     if(pBP){
     	array = [];
@@ -458,6 +492,23 @@ function fillTable(){
 		array[1].frequency = pBP.systolic;
 		array[1].name = 'Sistolični';
 		renderArea(array);
+		
+		var tlakStr = "";
+		
+		if(pBP.diastolic > 90){
+			tlakStr += "Močno povišan spodnji tlak <br/>";
+		}
+		else if(pBP.diastolic > 80){
+			tlakStr += "Rahlo povišan spodnji tlak <br/>";
+		}
+		
+		if(pBP.systolic > 130){
+			tlakStr += "Močno povišan zgornji tlak <br/>";
+		}
+		else if(pBP.systolic > 120){
+			tlakStr += "Rahlo povišan zgornji tlak <br/>";
+		}
+		$("#tlakOpozorilo").html(tlakStr);
     }
 	}
 }
