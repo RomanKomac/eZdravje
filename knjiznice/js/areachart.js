@@ -1,3 +1,5 @@
+//Bar chart by https://bl.ocks.org/mbostock/3885304
+//Edited and reconfigured by: Roman Komac
 var margin = {top: 20, right: 20, bottom: 30, left: 40},
     width = 200 - margin.left - margin.right,
     height = 350 - margin.top - margin.bottom;
@@ -56,11 +58,9 @@ function renderArea(data){
       .attr("class", "bar")
       .attr("fill", function(d,i){ 
           if(i == 0){
-              console.log(color(i));
             return (data[i].frequency > 80)? "#cc3333":color(i); 
           }
           else if(i == 1){
-              console.log(color(i));
             return (data[i].frequency > 120)? "#cc3333":color(i); 
           }
       })
