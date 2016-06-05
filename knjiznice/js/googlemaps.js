@@ -33,6 +33,7 @@ function initMap() {
       function handleNoGeolocation(errorFlag) {
         console.log("GeoLocation unavailable, setting to default");
         map.setCenter(initialLocation);
+        calculateAndDisplayRoute(directionsService, directionsDisplay);
       }
 
         
