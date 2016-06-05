@@ -101,6 +101,8 @@ th {
     color: white;
 }
 table {
+    display: inline-block;
+    float: left;
     border-collapse: collapse;
     width: 30%;
     border-color: #222;
@@ -122,3 +124,15 @@ td:hover {
 }
 
 tr:nth-child(even){background-color: #f2f2f2}
+
+donut, areamap{
+    display: inline-block;
+    float: left;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}

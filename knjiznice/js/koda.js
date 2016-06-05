@@ -93,8 +93,54 @@ function generirajPodatkePacientov(){
     Cookies.set("Session", "generirano");
     $("#background").hide();
     setTimeout(function(){
+    	$('#selectorPatient').prop('selectedIndex', 0);
+        changedBox();
+    }, 1000);
+    setTimeout(function(){
         $("#message").html("");
-    }, 4000)
+    }, 4000);
+}
+
+
+function tab(content){
+    var date = content.getAttribute("date");
+    var pW, pBP, pH;
+    currentPatientH.forEach(function (el, i, arr) {
+        if(el.time == date){
+        	pH = el;
+        }
+    });
+    currentPatientW.forEach(function (el, i, arr) {
+        if(el.time == date){
+        	pW = el;
+        }
+    });
+    currentPatientBP.forEach(function (el, i, arr) {
+        if(el.time == date){
+        	pBP = el;
+        }
+    });
+    
+    if(pW && pH){
+    	render(pW.weight/(pH.height*pH.height/10000));
+    }
+}
+
+function changedBox(){
+	if($("#selectorPatient").val() != null){
+	    	$("#examDate").show();
+	    	var ehrId = $("#selectorPatient").val();
+		    //console.log(ehrId);
+		    currentPatientBP = [];
+		    currentPatientH = [];
+		    currentPatientW = [];
+		    currentPatientExamDate = [];
+		    gotInfo = 0;
+		    $("#examDate").html("<tr><th>Examination Date</th></tr>");
+		    preberiKrvniTlak(ehrId);
+		    preberiTezo(ehrId);
+		    preberiVisino(ehrId);
+    	}
 }
 
 $(document).ready(function() {
@@ -261,7 +307,7 @@ function kreirajEHR(stPacienta) {
 		                    pacienti.push(partyData);
 		                    //console.log(partyData);
 		                    $("#selectorPatient").html($("#selectorPatient")[0].innerHTML + '<option value="'+partyData.partyAdditionalInfo[0].value+'">' + partyData.firstNames + ' ' + partyData.lastNames + '</option>');
-		                    $('#selectorPatient').prop('selectedIndex', -1);
+		                	$('#selectorPatient').prop('selectedIndex', -1);
 		                    kreirajData(stPacienta, ehrId, 0);
 		                    return ehrId;
 		                }
@@ -362,8 +408,32 @@ function fillTable(){
 	currentPatientExamDate.sort(SortDates);
 	currentPatientExamDate.forEach(function (el, i, arr) {
         var date = new Date(el);
-        $("#examDate").append('<tr><td>'+date.toLocaleDateString()+'</td></tr>');
+        $("#examDate").append('<tr onmouseenter="tab(this)" date="' + el + '"><td>'+date.toLocaleDateString()+'</td></tr>');
     });
+    //defaultanje chartov na prvo meritev
+    var dat = currentPatientExamDate[0];
+    var pW, pBP, pH;
+    currentPatientH.forEach(function (el, i, arr) {
+        if(el.time == dat){
+        	pH = el;
+        }
+    });
+    currentPatientW.forEach(function (el, i, arr) {
+        if(el.time == dat){
+        	pW = el;
+        }
+    });
+    currentPatientBP.forEach(function (el, i, arr) {
+        if(el.time == dat){
+        	pBP = el;
+        }
+    });
+    
+    if(pW && pH){
+    	render(pW.weight/(pH.height*pH.height/10000));
+    }
+    
+    
 	}
 }
 
